@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil — SPARR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="sparr.css">
+<style>
+.ph{position:relative;height:310px;overflow:hidden;background:#0d0d0d;}
+.phb{position:absolute;inset:0;background:linear-gradient(135deg,#f5951a 0%,#7a1010 55%,#0d0d0d 100%);}
+.pht{position:absolute;right:-20px;bottom:-30px;font-family:'Bebas Neue',sans-serif;font-size:24vw;color:rgba(255,255,255,.05);letter-spacing:-10px;line-height:1;user-select:none;pointer-events:none;}
+.pho{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,#0d0d0d 100%);}
+.bc{position:absolute;top:84px;left:60px;display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.5);z-index:2;}
+.bc a{color:rgba(255,255,255,.5);text-decoration:none;cursor:none;transition:color .3s;}
+.bc a:hover{color:white;}
+.rb{position:absolute;top:96px;right:60px;z-index:2;text-align:right;}
+.rbn{font-family:'Bebas Neue',sans-serif;font-size:68px;line-height:1;color:rgba(255,255,255,.1);letter-spacing:4px;}
+.rbl{font-size:11px;color:rgba(255,255,255,.25);letter-spacing:3px;text-transform:uppercase;}
+.pm{max-width:1160px;margin:0 auto;padding:0 60px;}
+.pid{display:flex;align-items:flex-end;gap:22px;margin-top:-50px;position:relative;z-index:2;margin-bottom:32px;flex-wrap:wrap;}
+.pav{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#f5951a,#ab2e2e);border:4px solid #0d0d0d;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:32px;color:white;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.6);flex-shrink:0;}
+.pav img{width:100%;height:100%;object-fit:cover;}
+.or{position:absolute;inset:-4px;border-radius:50%;border:2px solid #22c55e;}
+.ss{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:rgba(255,255,255,.08);border-radius:14px;overflow:hidden;margin-bottom:26px;}
+.sc{background:#181818;padding:18px 12px;text-align:center;}
+.scn{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;background:linear-gradient(135deg,#f5951a,#ab2e2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.scl{font-size:10px;color:rgba(240,240,240,.45);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+.pl{display:grid;grid-template-columns:1fr 290px;gap:22px;margin-bottom:80px;}
+.psec{background:#181818;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:16px;}
+.psh{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f5951a;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.psh::before{content:'';width:12px;height:1px;background:#f5951a;}
+.di{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.dbw{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.db{height:100%;background:linear-gradient(135deg,#f5951a,#ab2e2e);border-radius:2px;}
+.scard{background:#181818;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;margin-bottom:14px;}
+.sh{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f5951a;margin-bottom:14px;}
+.xbw{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin:7px 0;}
+.xb{height:100%;background:linear-gradient(135deg,#f5951a,#ab2e2e);border-radius:4px;}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.ac{background:rgba(255,255,255,.03);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(255,255,255,.08);transition:border-color .3s;}
+.ac:hover{border-color:rgba(245,149,26,.3);}
+@media(max-width:900px){.pl{grid-template-columns:1fr;}.pm{padding:0 18px;}.ss{grid-template-columns:repeat(3,1fr);}.bc,.rb{left:18px;right:18px;}.pid{flex-direction:column;align-items:flex-start;}.pact{margin-left:0;}}
+</style>
+</head>
+<body>
+<div id="sPageLoader" class="s-page-loader"><div class="logo">SPARR</div><div class="s-loader"></div></div>
+<div class="s-cursor" id="sCursor"></div><div class="s-cursor-ring" id="sCursorRing"></div>
+<div class="s-toast-wrap" id="toastWrap"></div>
+<nav class="s-nav">
+  <a class="s-logo" href="index.html">SPARR</a>
+  <div class="s-nav-links"><a href="index.html">Home</a><a href="profiles.html">Fighters</a><a href="messages.html">Zprávy</a><a href="my-profile.html">Profil</a></div>
+  <div class="s-nav-right" id="navRight"></div>
+</nav>
+<div class="ph">
+  <div class="phb"></div>
+  <div class="pht" id="pHSport">BOXING</div>
+  <div class="pho"></div>
+  <div class="bc"><a href="index.html">Home</a><span>/</span><a href="profiles.html">Fighters</a><span>/</span><span style="color:white" id="bcName">…</span></div>
+  <div class="rb"><div class="rbn" id="pHRank">#—</div><div class="rbl">Czech Ranking</div></div>
+</div>
+<div class="pm">
+  <div class="pid">
+    <div style="position:relative;flex-shrink:0">
+      <div class="pav" id="pAv">?</div>
+      <div class="or" id="pOnline" style="display:none"></div>
+    </div>
+    <div style="flex:1;padding-bottom:6px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4.5vw,58px);letter-spacing:2px;line-height:.9;margin-bottom:10px;color:#f0f0f0" id="pName">Načítám…</div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px;font-size:13px;color:rgba(240,240,240,.45)" id="pMeta"></div>
+      <div id="pTags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;padding-bottom:6px" class="pact" id="pAct"><div class="s-loader"></div></div>
+  </div>
+  <div class="ss">
+    <div class="sc"><div class="scn" id="sPts">—</div><div class="scl">Body</div></div>
+    <div class="sc"><div class="scn" id="sSess">—</div><div class="scl">Sessions</div></div>
+    <div class="sc"><div class="scn" id="sWins">—</div><div class="scl">Výhry</div></div>
+    <div class="sc"><div class="scn" id="sFol">—</div><div class="scl">Followers</div></div>
+    <div class="sc"><div class="scn" id="sYrs">1</div><div class="scl">Roky</div></div>
+  </div>
+  <div class="pl">
+    <div>
+      <div class="psec"><div class="psh">O bojovníkovi</div><p style="font-size:14px;color:rgba(240,240,240,.75);line-height:1.8;font-weight:300" id="pBio">Načítám…</p></div>
+      <div class="psec"><div class="psh">Disciplíny</div><div id="pDisc"></div></div>
+      <div class="psec">
+        <div class="psh">Aktivita</div>
+        <div id="pAct2">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)"><div style="width:8px;height:8px;border-radius:50%;background:#22c55e;margin-top:5px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#f0f0f0">Session verified</div><div style="font-size:12px;color:rgba(240,240,240,.45)">Training · Praha</div></div><div style="font-size:11px;color:rgba(240,240,240,.45)">2 dny</div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 0"><div style="width:8px;height:8px;border-radius:50%;background:#f5951a;margin-top:5px;flex-shrink:0"></div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#f0f0f0">Post na SPARR Wallu</div><div style="font-size:12px;color:rgba(240,240,240,.45)">Hledám sparring partnera</div></div><div style="font-size:11px;color:rgba(240,240,240,.45)">5 dní</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="scard">
+        <div class="sh">Ranking</div>
+        <div style="text-align:center;padding:8px 0"><div style="font-family:'Bebas Neue',sans-serif;font-size:68px;line-height:1;background:linear-gradient(135deg,#f5951a,#ab2e2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text" id="sRank">—</div><div style="font-size:11px;color:rgba(240,240,240,.45);letter-spacing:2px;text-transform:uppercase">Overall Rank</div></div>
+        <div style="height:1px;background:rgba(255,255,255,.08);margin:14px 0"></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:#f0f0f0"><span>XP</span><span id="xpT" style="color:rgba(240,240,240,.45)">—</span></div>
+        <div class="xbw"><div class="xb" id="xpB" style="width:0%"></div></div>
+        <div style="font-size:11px;color:rgba(240,240,240,.45)" id="xpL">—</div>
+      </div>
+      <div class="scard">
+        <div class="sh">Achievements</div>
+        <div class="ag">
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">🥊</div><div style="font-size:10px;color:rgba(240,240,240,.45)">Verified Fighter</div></div>
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">📋</div><div style="font-size:10px;color:rgba(240,240,240,.45)">Posted on Wall</div></div>
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">👥</div><div style="font-size:10px;color:rgba(240,240,240,.45)">1st Follower</div></div>
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">🔥</div><div style="font-size:10px;color:rgba(240,240,240,.45)">30-Day Streak</div></div>
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">⭐</div><div style="font-size:10px;color:rgba(240,240,240,.45)">Top Rated</div></div>
+          <div class="ac"><div style="font-size:20px;margin-bottom:5px">🏆</div><div style="font-size:10px;color:rgba(240,240,240,.45)">Tournament Win</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="s-modal-overlay" id="sparModal" onclick="if(event.target===this)closeModal('sparModal')">
+  <div class="s-modal">
+    <div class="s-modal-head"><div class="s-modal-title">Request Sparring</div><button class="s-modal-close" onclick="closeModal('sparModal')">✕</button></div>
+    <div class="s-modal-body">
+      <p style="font-size:14px;color:rgba(240,240,240,.45);margin-bottom:16px">Žádost pro <strong id="sparN" style="color:#f0f0f0">—</strong></p>
+      <div class="form-group"><label class="form-label">Zpráva</label><textarea class="form-input form-textarea" id="sparMsg" rows="4" placeholder="Představ se a navrhni čas…"></textarea></div>
+      <button class="btn btn-fire btn-full" style="padding:14px" id="sparBtn">Odeslat žádost</button>
+    </div>
+  </div>
+</div>
+<script type="module">
+import { onAuthReady, getProfile, toggleFollow, sendSparringRequest, initials, timeAgo, EJS } from './sparr.js';
+emailjs.init(EJS.publicKey);
+const cur=document.getElementById('sCursor'),ring=document.getElementById('sCursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx}px,${my}px)`;});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(a);})();
+window.showToast=function(msg,type='info'){const w=document.getElementById('toastWrap'),icons={success:'✅',error:'❌',info:'ℹ️',warning:'⚠️'};const t=document.createElement('div');t.className=`s-toast ${type}`;t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;w.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450);},4500);};
+window.openModal=id=>{const m=document.getElementById(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}};
+window.closeModal=id=>{const m=document.getElementById(id);if(m){m.classList.remove('open');document.body.style.overflow='';}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.s-modal-overlay.open').forEach(m=>m.classList.remove('open'));});
+window.addEventListener('load',()=>{const pl=document.getElementById('sPageLoader');if(pl){pl.style.opacity='0';setTimeout(()=>pl.remove(),500);}});
+const params=new URLSearchParams(location.search),tUid=params.get('uid');
+let _tgt=null,_me=null,_mp=null;
+onAuthReady(async(user,profile)=>{
+  _me=user;_mp=profile;
+  const right=document.getElementById('navRight');
+  if(user){right.innerHTML=`<a href="messages.html" class="btn btn-outline btn-sm">💬 Zprávy</a><a href="my-profile.html" class="nav-user-avatar">${profile?.photoURL?`<img src="${profile.photoURL}" alt="">`:initials(profile?.name||'?')}</a>`;}
+  else{right.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="location.href='index.html'">Log In</button>`;}
+  if(!tUid){document.getElementById('pName').textContent='Profil nenalezen';return;}
+  _tgt=await getProfile(tUid);
+  if(!_tgt){document.getElementById('pName').textContent='Profil nenalezen';return;}
+  renderP(_tgt);renderAct(user,_tgt);
+});
+function renderP(p){
+  document.title=`${p.name} — SPARR`;
+  document.getElementById('bcName').textContent=p.name;
+  document.getElementById('pHSport').textContent=(p.sport||'FIGHTER').toUpperCase();
+  document.getElementById('pHRank').textContent=p.rank?`#${p.rank}`:'#—';
+  document.getElementById('sRank').textContent=p.rank?`#${p.rank}`:'—';
+  const av=document.getElementById('pAv');if(p.photoURL){av.innerHTML=`<img src="${p.photoURL}" alt="">`;}else{av.textContent=initials(p.name);}
+  document.getElementById('pName').textContent=p.name;
+  document.getElementById('pMeta').innerHTML=`<span>📍 ${p.city||'—'}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;background:linear-gradient(135deg,#f5951a,#ab2e2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${p.level||'Fighter'}</span>`;
+  const tags=[p.sport,...(p.secondary||[]),p.openToSpar?'Open to Sparring':null,p.teachBeginners?'Teaches Beginners':null].filter(Boolean);
+  document.getElementById('pTags').innerHTML=tags.map(t=>`<span class="tag">${t}</span>`).join('')+'<span class="tag tag-green">✓ Verified</span>';
+  document.getElementById('sPts').textContent=(p.points||0).toLocaleString();
+  document.getElementById('sSess').textContent=p.sessions||0;
+  document.getElementById('sWins').textContent=p.wins||0;
+  document.getElementById('sFol').textContent=(p.followers||[]).length;
+  document.getElementById('sYrs').textContent=p.yearsActive||1;
+  const pts=p.points||0,next=Math.max(Math.ceil((pts+1)/1000)*1000,1000),pct=Math.round((pts%1000)/1000*100);
+  document.getElementById('xpT').textContent=`${pts.toLocaleString()} / ${next.toLocaleString()}`;
+  document.getElementById('xpB').style.width=`${pct}%`;
+  document.getElementById('xpL').textContent=`${pct}% do dalšího levelu`;
+  document.getElementById('pBio').textContent=p.bio||'Tento bojovník nemá bio.';
+  const discs=[[p.sport,5,'🥊'],...(p.secondary||[]).map((s,i)=>[s,Math.max(3-i,1),'🥋'])].filter(d=>d[0]);
+  document.getElementById('pDisc').innerHTML=discs.map(([n,y,ico])=>`<div class="di"><div style="width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#f5951a,#ab2e2e);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${ico}</div><div style="flex:1"><div style="font-weight:600;font-size:14px;color:#f0f0f0">${n}</div><div style="font-size:12px;color:rgba(240,240,240,.45)">${y} rok${y>1?'y':''}</div></div><div class="dbw"><div class="db" style="width:${Math.min(100,y*20)}%"></div></div></div>`).join('');
+}
+function renderAct(user,p){const row=document.getElementById('pAct');if(!user){row.innerHTML=`<button class="btn btn-fire" onclick="location.href='index.html'">Přihlásit se</button>`;return;}if(user.uid===tUid){row.innerHTML=`<a href="my-profile.html" class="btn btn-fire">Upravit profil</a>`;return;}const fol=(p.followers||[]).includes(user.uid);row.innerHTML=`<button class="btn btn-fire" onclick="openSparModal()">Request Sparring</button><a href="messages.html?uid=${p.uid}&name=${encodeURIComponent(p.name)}" class="btn btn-ghost">Napsat</a><button class="btn ${fol?'btn-outline':'btn-ghost'}" id="folBtn" onclick="doFollow()">${fol?'✓ Sleduji':'+ Sledovat'}</button>`;}
+window.doFollow=async()=>{if(!_me){location.href='index.html';return;}const btn=document.getElementById('folBtn');btn.disabled=true;try{const f=await toggleFollow(_me.uid,_mp?.name,tUid,_tgt.email||'',_tgt.name);btn.textContent=f?'✓ Sleduji':'+ Sledovat';btn.className=`btn ${f?'btn-outline':'btn-ghost'}`;showToast(f?`Sleduji ${_tgt.name}!`:`Přestal/a sleduji ${_tgt.name}`,'success');_tgt=await getProfile(tUid);document.getElementById('sFol').textContent=(_tgt.followers||[]).length;}catch{showToast('Chyba.','error');}btn.disabled=false;};
+window.openSparModal=()=>{if(!_me){location.href='index.html';return;}document.getElementById('sparN').textContent=_tgt.name;document.getElementById('sparMsg').value=`Ahoj ${_tgt.name}! Rád/a bych si s tebou zasparoval/a. Jsem ${_mp?.level||'fighter'} z ${_mp?.city||'ČR'}.`;openModal('sparModal');};
+document.getElementById('sparBtn').addEventListener('click',async()=>{const msg=document.getElementById('sparMsg').value.trim(),btn=document.getElementById('sparBtn');btn.disabled=true;btn.innerHTML='<span class="s-loader" style="width:16px;height:16px"></span>';try{await sendSparringRequest(_me.uid,_mp?.name,tUid,_tgt.email||'',_tgt.name,msg);closeModal('sparModal');showToast(`Žádost odeslána! 🥊`,'success');}catch{showToast('Odeslání selhalo.','error');}btn.disabled=false;btn.textContent='Odeslat žádost';});
+</script>
+</body>
+</html>

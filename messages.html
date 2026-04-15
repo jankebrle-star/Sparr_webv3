@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zprávy — SPARR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link rel="stylesheet" href="sparr.css">
+<style>
+body{overflow:hidden;}
+.ml{display:grid;grid-template-columns:290px 1fr;height:100vh;padding-top:72px;}
+.cl{background:#161616;border-right:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;}
+.clh{padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.clt{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#f0f0f0;margin-bottom:10px;}
+.csr{background:#0d0d0d;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;}
+.csr input{background:transparent;border:none;outline:none;font-family:'Barlow',sans-serif;font-size:14px;color:#f0f0f0;flex:1;cursor:none;}
+.csr input::placeholder{color:rgba(240,240,240,.35);}
+.cli{flex:1;overflow-y:auto;}
+.ce{padding:36px 16px;text-align:center;color:rgba(240,240,240,.45);font-size:13px;}
+.ci{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:none;transition:background .2s;border-bottom:1px solid rgba(255,255,255,.04);position:relative;}
+.ci:hover{background:rgba(255,255,255,.03);}
+.ci.active{background:rgba(245,149,26,.07);}
+.cin{flex:1;min-width:0;}
+.cina{font-weight:600;font-size:13px;display:flex;justify-content:space-between;color:#f0f0f0;}
+.cip{font-size:12px;color:rgba(240,240,240,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.cit{font-size:10px;color:rgba(240,240,240,.45);}
+.ciu{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:#f5951a;}
+.ca{display:flex;flex-direction:column;background:#0d0d0d;}
+.cae{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:rgba(240,240,240,.45);}
+.cah{padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.08);background:#161616;flex-shrink:0;display:flex;align-items:center;gap:12px;}
+.cahn{font-weight:600;font-size:15px;color:#f0f0f0;}
+.cahs{font-size:12px;color:rgba(240,240,240,.45);display:flex;align-items:center;gap:5px;margin-top:2px;}
+.cm{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px;}
+.msg{display:flex;gap:8px;max-width:72%;}
+.msg.mine{align-self:flex-end;flex-direction:row-reverse;}
+.mb{padding:9px 13px;border-radius:12px;font-size:14px;line-height:1.5;word-break:break-word;color:#f0f0f0;}
+.msg.theirs .mb{background:#181818;border:1px solid rgba(255,255,255,.08);border-bottom-left-radius:2px;}
+.msg.mine .mb{background:linear-gradient(135deg,#f5951a,#ab2e2e);color:white;border-bottom-right-radius:2px;}
+.mt{font-size:10px;color:rgba(240,240,240,.45);margin-top:3px;}
+.msg.mine .mt{text-align:right;}
+.ds{text-align:center;font-size:11px;color:rgba(240,240,240,.45);letter-spacing:1px;text-transform:uppercase;margin:5px 0;}
+.cia{padding:12px 18px;border-top:1px solid rgba(255,255,255,.08);background:#161616;flex-shrink:0;}
+.cir{display:flex;gap:8px;align-items:flex-end;background:#0d0d0d;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 8px 8px 14px;transition:border-color .3s;}
+.cir:focus-within{border-color:rgba(245,149,26,.4);}
+.cir textarea{flex:1;background:transparent;border:none;outline:none;font-family:'Barlow',sans-serif;font-size:14px;color:#f0f0f0;resize:none;min-height:22px;max-height:100px;line-height:1.5;cursor:none;}
+.cir textarea::placeholder{color:rgba(240,240,240,.35);}
+.sb{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,#f5951a,#ab2e2e);border:none;cursor:none;font-size:16px;flex-shrink:0;}
+.sb:disabled{opacity:.4;}
+.ncb{margin:10px 12px 0;}
+@media(max-width:700px){.ml{grid-template-columns:1fr;}body{overflow:auto;}}
+</style>
+</head>
+<body>
+<div id="sPageLoader" class="s-page-loader"><div class="logo">SPARR</div><div class="s-loader"></div></div>
+<div class="s-cursor" id="sCursor"></div><div class="s-cursor-ring" id="sCursorRing"></div>
+<div class="s-toast-wrap" id="toastWrap"></div>
+<nav class="s-nav" style="z-index:300">
+  <a class="s-logo" href="index.html">SPARR</a>
+  <div class="s-nav-links"><a href="index.html">Home</a><a href="profiles.html">Fighters</a><a href="messages.html" class="active">Zprávy</a><a href="my-profile.html">Profil</a></div>
+  <div class="s-nav-right" id="navRight"></div>
+</nav>
+<div class="ml">
+  <div class="cl">
+    <div class="clh">
+      <div class="clt">Zprávy</div>
+      <div class="csr"><span style="color:rgba(240,240,240,.45)">🔍</span><input type="text" id="csInput" placeholder="Hledat konverzaci…" oninput="filterChats()"></div>
+    </div>
+    <button class="btn btn-ghost btn-sm ncb" onclick="openModal('ncModal')">+ Nová konverzace</button>
+    <div class="cli" id="cliItems"><div class="ce"><div class="s-loader" style="margin:0 auto 12px"></div>Načítám…</div></div>
+  </div>
+  <div class="ca" id="chatArea">
+    <div class="cae" id="chatEmpty">
+      <div style="font-size:48px;opacity:.3">💬</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:#f0f0f0">Vyber konverzaci</div>
+      <div style="font-size:13px">nebo začni novou</div>
+    </div>
+  </div>
+</div>
+<div class="s-modal-overlay" id="ncModal" onclick="if(event.target===this)closeModal('ncModal')">
+  <div class="s-modal">
+    <div class="s-modal-head"><div class="s-modal-title">Nová zpráva</div><button class="s-modal-close" onclick="closeModal('ncModal')">✕</button></div>
+    <div class="s-modal-body">
+      <div class="form-group"><label class="form-label">Hledat bojovníka</label><input type="text" class="form-input" id="ncQ" placeholder="Jméno…" oninput="searchF()"></div>
+      <div id="ncRes" style="display:flex;flex-direction:column;gap:8px;margin-top:8px"></div>
+    </div>
+  </div>
+</div>
+<script type="module">
+import { onAuthReady, getProfile, getAllFighters, sendMessage, listenMessages, getChats, markRead, getChatId, initials, timeAgo, EJS } from './sparr.js';
+emailjs.init(EJS.publicKey);
+const cur=document.getElementById('sCursor'),ring=document.getElementById('sCursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx}px,${my}px)`;});
+(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(a);})();
+window.showToast=function(msg,type='info'){const w=document.getElementById('toastWrap'),icons={success:'✅',error:'❌',info:'ℹ️',warning:'⚠️'};const t=document.createElement('div');t.className=`s-toast ${type}`;t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;w.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),450);},4500);};
+window.openModal=id=>{const m=document.getElementById(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}};
+window.closeModal=id=>{const m=document.getElementById(id);if(m){m.classList.remove('open');document.body.style.overflow='';}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.s-modal-overlay.open').forEach(m=>m.classList.remove('open'));});
+window.addEventListener('load',()=>{const pl=document.getElementById('sPageLoader');if(pl){pl.style.opacity='0';setTimeout(()=>pl.remove(),500);}});
+let _u=null,_p=null,_chats=[],_active=null,_unsub=null;
+onAuthReady(async(user,profile)=>{
+  if(!user){window.location.href='index.html';return;}
+  _u=user;_p=profile;
+  document.getElementById('navRight').innerHTML=`<a href="my-profile.html" class="nav-user-avatar">${profile?.photoURL?`<img src="${profile.photoURL}" alt="">`:initials(profile?.name||'?')}</a>`;
+  await loadChats();
+  const p=new URLSearchParams(location.search);
+  if(p.get('uid')&&p.get('name'))openChat(p.get('uid'),decodeURIComponent(p.get('name')),null);
+});
+async function loadChats(){const items=document.getElementById('cliItems');try{_chats=await getChats(_u.uid);renderChats(_chats);}catch{items.innerHTML='<div class="ce">Žádné konverzace.</div>';}}
+function renderChats(chats){const items=document.getElementById('cliItems');if(!chats.length){items.innerHTML='<div class="ce">Žádné konverzace.<br>Začni novou!</div>';return;}items.innerHTML=chats.map(c=>{const ou=c.participants.find(u=>u!==_u.uid),on=c.participantNames?.[ou]||'Bojovník',unread=c[`unread_${_u.uid}`];return`<div class="ci ${_active?.uid===ou?'active':''}" onclick="openChat('${ou}','${on}','${c.id}')"><div class="s-avatar s-avatar-md">${initials(on)}</div><div class="cin"><div class="cina"><span>${on}</span><span class="cit">${c.lastMessageTs?timeAgo(c.lastMessageTs):''}</span></div><div class="cip">${c.lastMessage||'Začněte konverzaci'}</div></div>${unread?'<div class="ciu"></div>':''}</div>`;}).join('');}
+window.filterChats=()=>{const q=document.getElementById('csInput').value.toLowerCase();renderChats(q?_chats.filter(c=>{const ou=c.participants.find(u=>u!==_u.uid);return(c.participantNames?.[ou]||'').toLowerCase().includes(q);}):_chats);};
+window.openChat=function(uid,name,chatId){_active={uid,name,chatId};if(_unsub){_unsub();}markRead(chatId||getChatId(_u.uid,uid),_u.uid);document.querySelectorAll('.ci').forEach(el=>el.classList.remove('active'));const area=document.getElementById('chatArea');area.innerHTML=`<div class="cah"><div class="s-avatar s-avatar-md">${initials(name)}</div><div style="flex:1"><div class="cahn">${name}</div><div class="cahs"><span class="status-dot online"></span>Online</div></div><a href="profile.html?uid=${uid}" class="btn btn-ghost btn-sm">Profil</a></div><div class="cm" id="msgs"><div style="flex:1;display:flex;align-items:center;justify-content:center"><div class="s-loader"></div></div></div><div class="cia"><div class="cir"><textarea id="msgIn" placeholder="Napiš zprávu…" rows="1" oninput="autoR(this)" onkeydown="mkd(event)"></textarea><button class="sb" id="sbtn" onclick="sendM()">➤</button></div></div>`;_unsub=listenMessages(_u.uid,uid,msgs=>renderMsgs(msgs));loadChats();closeModal('ncModal');};
+function renderMsgs(msgs){const c=document.getElementById('msgs');if(!c)return;if(!msgs.length){c.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;color:rgba(240,240,240,.45);font-size:13px">Žádné zprávy. Pozdrav! 👋</div>';return;}let ld='';c.innerHTML=msgs.map(m=>{const mine=m.fromUid===_u.uid,d=new Date(m.ts),ds=d.toLocaleDateString('cs-CZ',{month:'short',day:'numeric'}),ts=d.toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'});let sep='';if(ds!==ld){sep=`<div class="ds">${ds}</div>`;ld=ds;}return`${sep}<div class="msg ${mine?'mine':'theirs'}">${!mine?`<div class="s-avatar s-avatar-sm">${initials(m.fromName)}</div>`:''}<div><div class="mb">${esc(m.text)}</div><div class="mt">${ts}</div></div></div>`;}).join('');c.scrollTop=c.scrollHeight;}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+window.sendM=async function(){if(!_active||!_u)return;const input=document.getElementById('msgIn'),text=input.value.trim();if(!text)return;const btn=document.getElementById('sbtn');btn.disabled=true;input.value='';input.style.height='';try{const tp=await getProfile(_active.uid);await sendMessage(_u.uid,_p?.name||'Fighter',_active.uid,_active.name,tp?.email||'',text);loadChats();}catch{showToast('Odeslání selhalo.','error');}btn.disabled=false;};
+window.mkd=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendM();}};
+window.autoR=el=>{el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';};
+let _st;
+window.searchF=()=>{clearTimeout(_st);const q=document.getElementById('ncQ').value.trim().toLowerCase(),res=document.getElementById('ncRes');if(q.length<2){res.innerHTML='';return;}res.innerHTML='<div class="s-loader" style="margin:12px auto;display:block"></div>';_st=setTimeout(async()=>{try{const all=await getAllFighters({limit:30}),found=all.filter(f=>f.name?.toLowerCase().includes(q)&&f.uid!==_u.uid);if(!found.length){res.innerHTML='<div style="color:rgba(240,240,240,.45);font-size:13px">Nic nenalezeno.</div>';return;}res.innerHTML=found.slice(0,8).map(f=>`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;cursor:none" onclick="openChat('${f.uid}','${f.name}',null)"><div class="s-avatar s-avatar-md">${f.photoURL?`<img src="${f.photoURL}" alt="">`:initials(f.name)}</div><div style="flex:1"><div style="font-weight:600;font-size:14px;color:#f0f0f0">${f.name}</div><div style="font-size:12px;color:rgba(240,240,240,.45)">${f.sport} · ${f.city}</div></div><span style="background:linear-gradient(135deg,#f5951a,#ab2e2e);color:white;padding:5px 12px;border-radius:4px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px">Napsat</span></div>`).join('');}catch{res.innerHTML='<div style="color:rgba(240,240,240,.45);font-size:13px">Chyba.</div>';}},400);};
+</script>
+</body>
+</html>
